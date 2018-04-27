@@ -29,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,6 +281,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public void forgotPassword(View view) {
+
+        Toast.makeText(this, "TOO BAD BITCH", Toast.LENGTH_LONG).show();
     }
 
     public void onRegister(View view) {

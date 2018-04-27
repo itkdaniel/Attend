@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
 //        register_name = (TextInputEditText) findViewById(R.id.register_name);
     }
 
@@ -44,7 +43,6 @@ public class RegisterActivity extends AppCompatActivity {
         String email = register_email.getText().toString();
         String password = register_password.getText().toString();
         String confirm = register_confirm.getText().toString();
-
 
 //        Log.d("TAG", "name : " + name);
 //        Toast.makeText(this, "Fuck You for Registering " + name, LENGTH_LONG).show();
@@ -67,15 +65,10 @@ public class RegisterActivity extends AppCompatActivity {
         String confirm = register_confirm.getText().toString();
 
         if(!name.isEmpty() && !email.isEmpty() && !password.isEmpty()){
-
             if(isPasswordMatch(password,confirm, register_confirm, "Passwords Do Not Match"));{
                 Log.d("Register Status: ", "Registration Success");
-
             }
-
         }
-
-
     }
 
     private boolean isPasswordMatch(String password, String confirm, TextInputEditText confirm_password, String message){
