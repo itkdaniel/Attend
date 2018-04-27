@@ -153,8 +153,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
-        Intent intent = new Intent(LoginActivity.this, LoginHome.class);
-        startActivity(intent);
+//        Intent intent = new Intent(LoginActivity.this, LoginHome.class);
+//        startActivity(intent);
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
@@ -190,7 +190,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+
+//            TO DO: QUERY IF USER EXISTS IN DATABASE
+            Intent intent = new Intent(LoginActivity.this, LoginHome.class);
+            startActivity(intent);
+
         }
+
     }
 
     private boolean isEmailValid(String email) {

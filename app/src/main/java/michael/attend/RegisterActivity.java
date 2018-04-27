@@ -7,23 +7,21 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.database.sqlite.*;
 
 import static android.widget.Toast.LENGTH_LONG;
 
 public class RegisterActivity extends AppCompatActivity {
 
-//    TextView register_name = (TextView) findViewById(R.id.register_name);
-//    TextView register_email = (TextView) findViewById(R.id.register_email);
-//    TextView register_password = (TextView) findViewById(R.id.register_password);
-
     TextInputEditText register_name;
     TextInputEditText register_email;
-    TextInputEditText register_password, register_confirm;
+    TextInputEditText register_password, register_confirm, register_username;
     private Context context;
 
     @Override
@@ -44,15 +42,17 @@ public class RegisterActivity extends AppCompatActivity {
         String password = register_password.getText().toString();
         String confirm = register_confirm.getText().toString();
 
-//        Log.d("TAG", "name : " + name);
-//        Toast.makeText(this, "Fuck You for Registering " + name, LENGTH_LONG).show();
         attempt_registration();
 //        finish();
 
     }
 
     private void attempt_registration(){
+        register_name = (TextInputEditText) findViewById(R.id.register_name);
+        register_username = (TextInputEditText) findViewById(R.id.register_username);
+        register_email = (TextInputEditText) findViewById(R.id.register_email);
         register_confirm = (TextInputEditText) findViewById(R.id.confirm_password);
+        register_username = (TextInputEditText) findViewById(R.id.register_username);
 
         // Reset errors.
         register_name.setError(null);
@@ -63,9 +63,19 @@ public class RegisterActivity extends AppCompatActivity {
         String email = register_email.getText().toString();
         String password = register_password.getText().toString();
         String confirm = register_confirm.getText().toString();
+        String username = register_username.getText().toString();
 
-        if(!name.isEmpty() && !email.isEmpty() && !password.isEmpty()){
+        isInputEmpty(register_name);
+        isInputEmpty(register_username);
+        isInputEmpty(register_email);
+        isInputEmpty(register_password);
+        isInputEmpty(register_confirm);
+
+        if(!password.isEmpty() && !confirm.isEmpty()){
             if(isPasswordMatch(password,confirm, register_confirm, "Passwords Do Not Match"));{
+                User user = new User(name, username, email, password);
+                // SQL DATABASE LOGIC HERE
+
                 Log.d("Register Status: ", "Registration Success");
             }
         }
@@ -79,12 +89,38 @@ public class RegisterActivity extends AppCompatActivity {
             Log.d("Password verification", message);
             return false;
         }else{
-//            confirm_password.setErrorEnabled(false);
             finish();
             Log.d("TAG", "name : " + name);
             Toast.makeText(this, "Fuck You for Registering " + name, LENGTH_LONG).show();
             return true;
         }
+    }
+
+    private boolean isInputEmpty(TextInputEditText editText){
+        String text = editText.getText().toString().trim();
+        if(text.isEmpty()){
+            editText.setError("Input Invalid");
+            hideKeyboard(editText);
+            Log.d("INPUT VALIDITY", "NOT VALID");
+            return true;
+        }else{
+            Log.d("INPUT VALIDITY", "VALID");
+            return false;
+        }
+    }
+
+//    value.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches())     IS EMAIL VALID
+    private boolean isEmailValid(TextInputEditText email_editText){
+        String email = email_editText.getText().toString().trim();
+        if(email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            email_editText.setError("Invalid Email");
+            hideKeyboard(email_editText);
+            Log.d("EMAIL VALIDITY", "VALID");
+            return false;
+        }else{
+            return true;
+        }
+
     }
 
     private void hideKeyboard(View view){

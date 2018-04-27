@@ -1,14 +1,16 @@
+package michael.attend;
+
 public class User {
 
     private String name, username, email, password;
     private int id;
 
-//    public User(String name, String username, String email, String password){
-//        this.name = name;
-//        this.email = email;
-//        this.password = password;
-//        this.username = username;
-//    }
+    public User(String name, String username, String email, String password){
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
 
     private void setId(int id){
         this.id = id;
