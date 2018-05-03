@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "131452909946-ek4635u4r3vmm5lpu1fg7f072bpnfejh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "michael.attend",
+            "certificate_hash": "4c0bf8002de6781f37ca40b6141efe4d9e6c0cb1"
+          }
+        },
+        {
           "client_id": "131452909946-up24mac7kmjtt2lvu2kf5koin1tiv7ug.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131452909946-up24mac7kmjtt2lvu2kf5koin1tiv7ug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
