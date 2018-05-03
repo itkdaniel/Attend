@@ -10,7 +10,7 @@
 
     android:fitsSystemWindows="true"
 
-    tools:context=".LoginActivity">
+    tools:context=".SignupActivity">
 
 
 
@@ -20,7 +20,7 @@
 
         android:layout_height="fill_parent"
 
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
 
         android:gravity="center"
 
@@ -62,15 +62,17 @@
 
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="10dp"
-
-                android:hint="@string/hint_email"
+                android:hint="@string/email"
 
                 android:inputType="textEmailAddress"
 
-                android:textColor="@android:color/white"
+                android:maxLines="1"
 
-                android:textColorHint="@android:color/white" />
+                android:singleLine="true"
+
+                android:textColor="@android:color/white" />
+
+
 
         </android.support.design.widget.TextInputLayout>
 
@@ -88,43 +90,51 @@
 
                 android:id="@+id/password"
 
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
 
                 android:layout_height="wrap_content"
 
-                android:layout_marginBottom="10dp"
+                android:focusableInTouchMode="true"
 
                 android:hint="@string/hint_password"
 
+                android:imeActionId="@+id/login"
+
+                android:imeOptions="actionUnspecified"
+
                 android:inputType="textPassword"
 
-                android:textColor="@android:color/white"
+                android:maxLines="1"
 
-                android:textColorHint="@android:color/white" />
+                android:singleLine="true"
+
+                android:textColor="@android:color/white" />
+
+
 
         </android.support.design.widget.TextInputLayout>
 
 
 
-        <!-- Login Button -->
-
-
-
         <Button
 
-            android:id="@+id/btn_login"
+            android:id="@+id/sign_up_button"
 
-            android:layout_width="fill_parent"
+            style="?android:textAppearanceSmall"
+
+            android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="20dip"
+            android:layout_marginTop="16dp"
 
             android:background="@color/colorAccent"
 
-            android:text="@string/btn_login"
+            android:text="@string/action_sign_in_short"
 
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+
+            android:textStyle="bold" />
 
 
 
@@ -154,7 +164,7 @@
 
         <Button
 
-            android:id="@+id/btn_signup"
+            android:id="@+id/sign_in_button"
 
             android:layout_width="fill_parent"
 
@@ -164,7 +174,7 @@
 
             android:background="@null"
 
-            android:text="Not a member? Register now!"
+            android:text="@string/btn_link_to_login"
 
             android:textAllCaps="false"
 
