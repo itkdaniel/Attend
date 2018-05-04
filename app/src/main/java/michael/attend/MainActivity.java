@@ -54,4 +54,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
+    public void onStop(){
+        super.onStop();
+        if (auth.getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+
+        }
+    }
 }
