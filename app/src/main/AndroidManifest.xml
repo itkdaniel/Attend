@@ -22,8 +22,8 @@
         </activity>
 
 
-        <activity android:name=".LoginHome"
-                  android:theme="@style/homePage">
+        <activity android:name=".LoginHome">
+                  <!--android:theme="@style/homePage">-->
         </activity>
 
 

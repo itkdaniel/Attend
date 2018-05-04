@@ -56,13 +56,13 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 
-        if (auth.getCurrentUser() != null) {
-
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-            finish();
-
-        }
+//        if (auth.getCurrentUser() != null) {
+//
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//
+//            finish();
+//
+//        }
 
 
         // set the view now
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 } else {
 
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, LoginHome.class);
 
                                     startActivity(intent);
 
