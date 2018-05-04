@@ -16,12 +16,12 @@ public class LoginHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_home);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.user_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu){
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.user_menu, menu);
+//        return true;
+//    }
 
     public void on_addGroup(View view) {
 
