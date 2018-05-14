@@ -1,4 +1,4 @@
-package com.example.micha.hw2;
+package michael.attend;
 
 import android.Manifest;
 import android.app.Activity;
