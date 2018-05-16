@@ -11,9 +11,9 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="match_parent">
+        <!--tools:layout_editor_absoluteX="16dp"-->
+        <!--tools:layout_editor_absoluteY="0dp">-->
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_group"
@@ -32,21 +32,19 @@
 
     </ScrollView>
 
-
     <ImageView
         android:id="@+id/create_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-
-
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="100dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="100dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
+        android:onClick="create_group"
         android:clickable="true"
         android:scaleType="center"
         android:src="@drawable/create_group_button"
@@ -69,6 +67,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="100dp"
+        android:onClick="onclick_viewgroups"
         android:clickable="true"
         android:scaleType="center"
         android:src="@drawable/view_group_button"

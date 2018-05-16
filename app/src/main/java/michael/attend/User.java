@@ -1,15 +1,25 @@
 package michael.attend;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+
 public class User {
 
-    private String name, username, email, password;
+    public String name, username, email, password;
+    public ArrayList<String> groupList;
     private int id;
 
-    public User(String name, String username, String email, String password){
+    public User(String email){
+        this.email = email;
+        this.groupList = new ArrayList<String>();
+    }
+    public User(String name, String username, String email, String password, ArrayList<String> groupList){
         this.name = name;
         this.email = email;
         this.password = password;
         this.username = username;
+        this.groupList = groupList;
     }
 
     private void setId(int id){
@@ -41,6 +51,17 @@ public class User {
 
     private String getEmail(){
         return this.email;
+    }
+
+    public ArrayList<String> getGroupList(){
+        return this.groupList;
+    }
+    public void setGroupList(ArrayList<String> groupList){
+        this.groupList = groupList;
+    }
+    public void addGroup(String group){
+        this.groupList.add(group);
+        Log.d("GroupList: ", groupList.toString());
     }
 
     private void setPassword(String password){

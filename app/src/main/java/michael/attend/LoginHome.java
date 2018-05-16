@@ -9,12 +9,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class LoginHome extends AppCompatActivity {
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+public class LoginHome extends AppCompatActivity {
+    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_home);
+
+        //get firebase auth instance
+        auth = FirebaseAuth.getInstance();
+        //get current user
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu){
@@ -36,5 +46,21 @@ public class LoginHome extends AppCompatActivity {
             startActivity(intent);
         }
         return true;
+    }
+
+    public void onclick_viewgroups(View view) {
+        startActivity(new Intent(LoginHome.this, ViewGroupsActivity.class));
+    }
+
+    public void create_group(View view) {
+        startActivity(new Intent(LoginHome.this, CreateGroupActivity.class));
+    }
+
+    public void onStop(){
+        super.onStop();
+        if (auth.getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+
+        }
     }
 }
