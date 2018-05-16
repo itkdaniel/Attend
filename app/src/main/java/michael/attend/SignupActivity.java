@@ -25,7 +25,8 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth auth;
 //    public static User user1;
     String email, password;
-
+    ArrayList userGroupList = new ArrayList<>();
+    ArrayList hostGroupList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

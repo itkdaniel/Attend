@@ -1,13 +1,17 @@
 package michael.attend;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,10 +25,15 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private String email, password;
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
+    private CheckBox saveLoginCheckBox;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private Boolean saveLogin;
     public static User user1;
 
     @Override
@@ -45,6 +54,17 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnReset = findViewById(R.id.btn_reset_password);
+        saveLoginCheckBox = (CheckBox) findViewById(R.id.save_login);
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+
+        if(saveLogin == true){
+            inputEmail.setText(loginPreferences.getString("email", ""));
+            inputPassword.setText(loginPreferences.getString("password", ""));
+            saveLoginCheckBox.setChecked(true);
+        }
+
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
         btnSignup.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
-
         });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +88,20 @@ public class LoginActivity extends AppCompatActivity {
                 final String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
+                if(v == btnLogin){
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(inputEmail.getWindowToken(),0);
+
+                    if(saveLoginCheckBox.isChecked()){
+                        loginPrefsEditor.putBoolean("saveLogin", true);
+                        loginPrefsEditor.putString("email", email);
+                        loginPrefsEditor.putString("password", password);
+                        loginPrefsEditor.commit();
+                    }else{
+                        loginPrefsEditor.clear();
+                        loginPrefsEditor.commit();
+                    }
+                }
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;

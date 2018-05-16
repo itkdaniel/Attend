@@ -8,6 +8,18 @@ public class User {
 
     public String name, username, email, password;
     public ArrayList<String> groupList;
+    public ArrayList<String> hostGroupList;
+
+//    User DataBase "Table":
+//    Name, Email, userGroups, hostGroups
+//
+//    get user.hostGroups
+//
+//    if groupName is in user.hostGroupList {
+//        startActivity(hostViewgroup)
+//    }else{
+//        startActivity(userVewGroup)
+//    }
     private int id;
 
     public User(String email){
