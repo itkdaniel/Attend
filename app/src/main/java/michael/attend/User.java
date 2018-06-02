@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class User {
 
-    public String name, username, email, password;
+    public String name, username, email, password, uid;
     public ArrayList<ListData> groupList;
     public ArrayList<String> hostGroupList;
 
@@ -22,21 +22,28 @@ public class User {
 //    }
     private int id;
 
+    public User(){
+
+    }
+
     public User(String email){
         this.email = email;
         this.groupList = new ArrayList<ListData>();
     }
 
-    public User(String uid, String email){
+    // TODO: FOR LOGIN
+    public User(String uid, String email, ArrayList<ListData> groups){
         this.name = uid;
         this.email = email;
         this.groupList = new ArrayList<ListData>();
     }
 
-    public User(String uid, String name, String email){
+    // TODO: FOR REGISTRATION
+    public User(String uid, String name, String email, ArrayList<ListData> groups){
+        this.uid = uid;
         this.name = name;
         this.email = email;
-        this.groupList = new ArrayList<ListData>();
+        this.groupList = groups;
     }
 
     public User(String name, String username, String email, String password, ArrayList<ListData> groupList){

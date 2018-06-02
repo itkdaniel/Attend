@@ -109,7 +109,8 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_LONG).show();
                                 } else {
-                                    user1 = new User(name, email);
+                                    ArrayList<ListData> userlist = new ArrayList<ListData>();
+                                    user1 = new User(auth.getCurrentUser().getUid(), name, email, userlist);
 //                                    user1 = new User(auth.getUid(), name, email);   Create a user with id_name auth.getuid()"
 //                                    DatabaseReference dbf = mDatabase.child("users").push();
                                     auth = FirebaseAuth.getInstance();

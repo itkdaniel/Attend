@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,8 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
     public static User user1;
+    ArrayList<ListData> GroupsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +146,41 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
 //                                    ArrayList<String> group_list = new ArrayList<String>();
                                     // TODO: GET GROUP_LIST FROM DATA BASE AND ASSIGN TO USER1'S GROUPLIST WHEN CREATING USER INSTANCE
-                                    user1 = new User(auth.getUid(), email);
+                                    GroupsList=new ArrayList<ListData>();
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getUid()).child("user_groups");
+                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            try {
+                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                                    ListData listdata = postSnapshot.getValue(ListData.class);
+                                                    Log.d("ondatachange_listdata", listdata.toString());
+
+                                                    GroupsList.add(listdata);
+                                                    if(GroupsList != null){
+                                                        Log.d("ondatachange_usergroups", "groupslist not null !");
+
+                                                    }else{
+                                                        Log.d("ondatachange_usergroups", "groupslist null >:[");
+
+                                                    }
+                                                }
+                                                for (int i = 0; i < GroupsList.size(); i++){
+                                                    Log.d("ondatachange_groups", GroupsList.get(i).title);
+
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Log.d("ondata_error", "Error: ", databaseError.toException());
+                                        }
+                                    });
+                                    // TODO: ==========================================================
+                                    user1 = new User(auth.getUid(), email, GroupsList);
 //                                    mDatabase.child("users").removeValue();
                                     Intent intent = new Intent(LoginActivity.this, LoginHome.class);
                                     startActivity(intent);

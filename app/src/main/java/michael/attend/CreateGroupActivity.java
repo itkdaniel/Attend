@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     TextInputEditText hostName;
     User user1;
     String current_uid;
+    ArrayList<ListData> GroupsList;
 //    String user_uid = LoginActivity.user1.getName();
 //    private FirebaseAuth auth;
 
@@ -50,21 +54,74 @@ public class CreateGroupActivity extends AppCompatActivity {
         user1 = LoginActivity.user1;
 //        current_uid = LoginActivity.auth.getUid();
 //        Log.d("current_uid", current_uid);
-        groupName = findViewById(R.id.group_name);
-        groupDescription = findViewById(R.id.group_description);
-        hostName = findViewById(R.id.host_name);
-        ListData group = new ListData();
-        group.title = groupName.getText().toString();
-        group.description = groupDescription.getText().toString();
-        group.hostName = hostName.getText().toString();
+
+        GroupsList=new ArrayList<ListData>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid).child("user_groups");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        ListData listdata = postSnapshot.getValue(ListData.class);
+                        Log.d("ondatachange_listdata", listdata.toString());
+
+                        GroupsList.add(listdata);
+                        if(GroupsList != null){
+                            Log.d("ondatachange_usergroups", "groupslist not null !");
+
+                        }else{
+                            Log.d("ondatachange_usergroups", "groupslist null >:[");
+
+                        }
+                    }
+                    for (int i = 0; i < GroupsList.size(); i++){
+                        Log.d("ondatachange_groups", GroupsList.get(i).title);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("creategroup_listsize", String.valueOf(GroupsList.size()));
+                groupName = findViewById(R.id.group_name);
+                groupDescription = findViewById(R.id.group_description);
+                hostName = findViewById(R.id.host_name);
+                ListData group = new ListData();
+                group.title = groupName.getText().toString();
+                group.description = groupDescription.getText().toString();
+                group.hostName = hostName.getText().toString();
 //        ArrayList<ListData> group = new ArrayList<ListData>();
 //        groupNames.add(groupName.getText().toString());
-        user1.addGroup(group);
-        Log.d("GroupList: ", user1.groupList.toString());
+                user1.addGroup(group);
+                GroupsList.add(group);
+                Log.d("GroupList: ", user1.groupList.toString());
 //        DatabaseReference dbf = mDatabase.child("users").push();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(current_uid).child("user_groups").setValue(user1.groupList);
-        finish();
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("users").child(current_uid).child("user_groups").setValue(GroupsList);
+                finish();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("ondata_error", "Error: ", databaseError.toException());
+            }
+        });
+//        Log.d("creategroup_listsize", String.valueOf(GroupsList.size()));
+//        groupName = findViewById(R.id.group_name);
+//        groupDescription = findViewById(R.id.group_description);
+//        hostName = findViewById(R.id.host_name);
+//        ListData group = new ListData();
+//        group.title = groupName.getText().toString();
+//        group.description = groupDescription.getText().toString();
+//        group.hostName = hostName.getText().toString();
+////        ArrayList<ListData> group = new ArrayList<ListData>();
+////        groupNames.add(groupName.getText().toString());
+//        user1.addGroup(group);
+//        GroupsList.add(group);
+//        Log.d("GroupList: ", user1.groupList.toString());
+////        DatabaseReference dbf = mDatabase.child("users").push();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mDatabase.child("users").child(current_uid).child("user_groups").setValue(user1.groupList);
+//        finish();
 
 //        Intent viewGroupsIntent = new Intent(context, ViewGroupsActivity.class);
 //        viewGroupsIntent.putExtra("groupName", groupName.getText().toString());
