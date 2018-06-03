@@ -19,31 +19,25 @@ import java.util.ArrayList;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
-    DatabaseReference mDatabase;
-    final Context context = this;
-    TextInputEditText groupName;
     TextInputEditText groupDescription;
-    TextInputEditText hostName;
-    User user1;
-    String current_uid;
     ArrayList<ListData> GroupsList;
-//    String user_uid = LoginActivity.user1.getName();
-//    private FirebaseAuth auth;
+    TextInputEditText groupName;
+    DatabaseReference mDatabase;
+    TextInputEditText hostName;
+    String current_uid;
+    User user1;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-//        auth = FirebaseAuth.getInstance();
         if (current_uid == null){
-//            current_uid = LoginHome.auth.getCurrentUser().getUid();
             current_uid = LoginHome.user_uid;
             Log.d("user_uid", current_uid);
         }
-
         Log.d("current_uid", current_uid);
-//        Log.d("user1_name", user_uid);
     }
 
     public void onBackPressed(){
@@ -51,11 +45,20 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
     public void onclick_creategroup(View view) {
-        user1 = LoginActivity.user1;
-//        current_uid = LoginActivity.auth.getUid();
-//        Log.d("current_uid", current_uid);
+        create_add_group();
+    }
 
+    public void onResume(){
+        super.onResume();
+        current_uid = LoginHome.user_uid;
+        Log.d("Create_onReume_uid: ", current_uid);
+
+    }
+
+    public void create_add_group(){
+        user1 = LoginActivity.user1;
         GroupsList=new ArrayList<ListData>();
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid).child("user_groups");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -89,12 +92,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                 group.title = groupName.getText().toString();
                 group.description = groupDescription.getText().toString();
                 group.hostName = hostName.getText().toString();
-//        ArrayList<ListData> group = new ArrayList<ListData>();
-//        groupNames.add(groupName.getText().toString());
                 user1.addGroup(group);
                 GroupsList.add(group);
                 Log.d("GroupList: ", user1.groupList.toString());
-//        DatabaseReference dbf = mDatabase.child("users").push();
                 mDatabase = FirebaseDatabase.getInstance().getReference();
                 mDatabase.child("users").child(current_uid).child("user_groups").setValue(GroupsList);
                 finish();
@@ -105,34 +105,5 @@ public class CreateGroupActivity extends AppCompatActivity {
                 Log.d("ondata_error", "Error: ", databaseError.toException());
             }
         });
-//        Log.d("creategroup_listsize", String.valueOf(GroupsList.size()));
-//        groupName = findViewById(R.id.group_name);
-//        groupDescription = findViewById(R.id.group_description);
-//        hostName = findViewById(R.id.host_name);
-//        ListData group = new ListData();
-//        group.title = groupName.getText().toString();
-//        group.description = groupDescription.getText().toString();
-//        group.hostName = hostName.getText().toString();
-////        ArrayList<ListData> group = new ArrayList<ListData>();
-////        groupNames.add(groupName.getText().toString());
-//        user1.addGroup(group);
-//        GroupsList.add(group);
-//        Log.d("GroupList: ", user1.groupList.toString());
-////        DatabaseReference dbf = mDatabase.child("users").push();
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mDatabase.child("users").child(current_uid).child("user_groups").setValue(user1.groupList);
-//        finish();
-
-//        Intent viewGroupsIntent = new Intent(context, ViewGroupsActivity.class);
-//        viewGroupsIntent.putExtra("groupName", groupName.getText().toString());
-//        startActivity(viewGroupsIntent);
-    }
-
-    public void onResume(){
-        super.onResume();
-//        current_uid = LoginHome.auth.getCurrentUser().getUid();
-        current_uid = LoginHome.user_uid;
-        Log.d("Create_onReume_uid: ", current_uid);
-
     }
 }

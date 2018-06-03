@@ -17,4 +17,6 @@
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
     <color name="view_groups_bg">#a8c0c0</color>
+    <color name="group_detail">	#d8a890</color>
+
 </resources>

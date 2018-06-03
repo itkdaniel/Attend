@@ -25,170 +25,26 @@ import java.util.ArrayList;
 
 public class ViewGroupsActivity extends AppCompatActivity{
 
-//    User user;
-//    ArrayList<String> groupNames = new ArrayList<String>();
-//    String groupName;
-    ListView group_list;
-    User user1 = LoginActivity.user1;
-    String[] listItems;
-    private FirebaseAuth auth;
-    private DatabaseReference mDatabase;
-    private String current_uid;
-    private DatabaseReference mUserReference;
-    private ArrayList<User> userList;
-    ArrayList<ListData> groups;
-    DatabaseReference groupsRef;
-    FirebaseDatabase database;
-    ListData groups_list;
-    Context mContext;
-    User current_user;
-    String uid;
     ArrayList<ListData> GroupsList;
-
-
-
-
+    User user1 = LoginActivity.user1;
+    private ArrayList<User> userList;
+    DatabaseReference groupsRef;
+    ArrayList<ListData> groups;
+    FirebaseDatabase database;
+    ListView group_list;
+    String[] listItems;
+    FirebaseAuth auth;
+    Context mContext;
+    String uid;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_groups);
-        group_list = findViewById(R.id.group_list);
 
-        auth = FirebaseAuth.getInstance();
-        uid = LoginHome.user_uid;
-        database = FirebaseDatabase.getInstance();
-        groupsRef = database.getReference("users");
-
-        userList = new ArrayList<User>();
-        groups = new ArrayList<ListData>();
-//        auth = FirebaseAuth.getInstance();
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        current_uid = auth.getCurrentUser().getUid();
-//
-//        mUserReference = FirebaseDatabase.getInstance().getReference().child(current_uid);
-
-
-        GroupsList=new ArrayList<ListData>();
-        mContext = this;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        ListData listdata = postSnapshot.getValue(ListData.class);
-                        Log.d("ondatachange_listdata", listdata.toString());
-
-                        GroupsList.add(listdata);
-                        if(GroupsList != null){
-                            Log.d("ondatachange_usergroups", "groupslist not null !");
-
-                        }else{
-                            Log.d("ondatachange_usergroups", "groupslist null >:[");
-
-                        }
-                    }
-                    for (int i = 0; i < GroupsList.size(); i++){
-                        Log.d("ondatachange_groups", GroupsList.get(i).title);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.d("GroupList_size", String.valueOf(GroupsList.size()));
-
-
-                if(GroupsList != null){
-                    listItems = new String[GroupsList.size()];
-                    Log.d("GroupList_size onCreate", String.valueOf(GroupsList.size()));
-
-                }
-                Log.d("listitems_size", String.valueOf(listItems.length));
-
-                if(GroupsList != null){
-                    for(int i = 0; i < GroupsList.size(); i++){
-                        listItems[i] = GroupsList.get(i).title;
-                    }
-//            ListAdapter eventAdapter = new ArrayAdapter<ListData>(this,android.R.layout.simple_list_item_1, user1.groupList);
-                    ListAdapter eventAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, listItems);
-                    group_list.setAdapter(eventAdapter);
-                }else{
-                    Log.d("Viewgroups GroupList: ", user1.groupList.toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("ondata_error", "Error: ", databaseError.toException());
-            }
-        });
-
-
-//        Log.d("GroupList_size", String.valueOf(GroupsList.size()));
-//
-//
-//        if(GroupsList != null){
-//            listItems = new String[GroupsList.size()];
-//            Log.d("GroupList_size onCreate", String.valueOf(GroupsList.size()));
-//
-//        }
-//        Log.d("listitems_size", String.valueOf(listItems.length));
-//
-//        if(GroupsList != null){
-//            for(int i = 0; i < GroupsList.size(); i++){
-//                listItems[i] = GroupsList.get(i).title;
-//            }
-////            ListAdapter eventAdapter = new ArrayAdapter<ListData>(this,android.R.layout.simple_list_item_1, user1.groupList);
-//            ListAdapter eventAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listItems);
-//            group_list.setAdapter(eventAdapter);
-//        }else{
-//            Log.d("Viewgroups GroupList: ", user1.groupList.toString());
-//        }
-
-
-
-
-//        Intent i;
-//        if((i=getIntent()) == null){
-//            ListAdapter eventAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, groupNames);
-//            group_list.setAdapter(eventAdapter);
-//
-//        }else{
-//            i = getIntent();
-//            groupName = i.getStringExtra("groupName");
-//            groupNames.add(groupName);
-//            ListAdapter eventAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, groupNames);
-//            group_list.setAdapter(eventAdapter);
-//        }
-
-//        String[] classes = {"CMPS121", "CMPS102", "CMPS143", "CMPS140", "AMS131", "CMPS111", "CMPS112", "CMPS115", "CMPS184"};
-
-
+        init_variables();
+        get_view_groups_data();
     }
-
-//    public User currentUser(){
-//        return SignupActivity.user1;
-//    }
-
-    @Override
-//    public void onStart(){
-//        super.onStart();
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                User current_user = dataSnapshot.getValue(User.class);
-//                groupList = current_user.groupList;
-//                Log.d("")
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        };
-//    }
 
     protected void onResume(){
         super.onResume();
@@ -310,6 +166,9 @@ public class ViewGroupsActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.d("onDataChange_itemclick", uid);
+                ListData selected = GroupsList.get(position);
+                Intent detailIntent = new Intent(mContext, DetailActivityHost.class);
+                startActivity(detailIntent);
 //                Log.d("user" ,"name " + current_user.getName());
 
 //                final int group_position = position;
@@ -359,5 +218,73 @@ public class ViewGroupsActivity extends AppCompatActivity{
     public void onBackPressed(){
 //        startActivity(new Intent(ViewGroupsActivity.this, LoginHome.class));
         finish();
+    }
+
+    public void init_variables(){
+        group_list = findViewById(R.id.group_list);
+
+        auth = FirebaseAuth.getInstance();
+        uid = LoginHome.user_uid;
+        database = FirebaseDatabase.getInstance();
+        groupsRef = database.getReference("users");
+
+        userList = new ArrayList<User>();
+        groups = new ArrayList<ListData>();
+    }
+
+    public void get_view_groups_data(){
+        GroupsList=new ArrayList<ListData>();
+        mContext = this;
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        ListData listdata = postSnapshot.getValue(ListData.class);
+                        Log.d("ondatachange_listdata", listdata.toString());
+
+                        GroupsList.add(listdata);
+                        if(GroupsList != null){
+                            Log.d("ondatachange_usergroups", "groupslist not null !");
+
+                        }else{
+                            Log.d("ondatachange_usergroups", "groupslist null >:[");
+
+                        }
+                    }
+                    for (int i = 0; i < GroupsList.size(); i++){
+                        Log.d("ondatachange_groups", GroupsList.get(i).title);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("GroupList_size", String.valueOf(GroupsList.size()));
+
+
+                if(GroupsList != null){
+                    listItems = new String[GroupsList.size()];
+                    Log.d("GroupList_size onCreate", String.valueOf(GroupsList.size()));
+
+                }
+                Log.d("listitems_size", String.valueOf(listItems.length));
+
+                if(GroupsList != null){
+                    for(int i = 0; i < GroupsList.size(); i++){
+                        listItems[i] = GroupsList.get(i).title;
+                    }
+//            ListAdapter eventAdapter = new ArrayAdapter<ListData>(this,android.R.layout.simple_list_item_1, user1.groupList);
+                    ListAdapter eventAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, listItems);
+                    group_list.setAdapter(eventAdapter);
+                }else{
+                    Log.d("Viewgroups GroupList: ", user1.groupList.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("ondata_error", "Error: ", databaseError.toException());
+            }
+        });
     }
 }
