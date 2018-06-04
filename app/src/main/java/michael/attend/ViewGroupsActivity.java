@@ -164,10 +164,23 @@ public class ViewGroupsActivity extends AppCompatActivity{
         group_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Log.d("onDataChange_itemclick", uid);
                 ListData selected = GroupsList.get(position);
+
+                // TODO: IMPLEMENT USER_JOIN_GROUP TO POPULATE LISTDATA.ATTENDEES
+//                String[] attendee_names = new String[selected.attendees.size()];
+//                String[] attendee_emails = new String[selected.attendees.size()];
+//                for (int i = 0; i < selected.attendees.size(); i++){
+//                    attendee_names[i] = selected.attendees.get(i).name;
+//                    attendee_emails[i] = selected.attendees.get(i).email;
+//                }
+                Toast.makeText(mContext, selected.title, Toast.LENGTH_LONG).show(); // Toast Group Name
                 Intent detailIntent = new Intent(mContext, DetailActivityHost.class);
+                detailIntent.putExtra("title", selected.title);
+                detailIntent.putExtra("description", selected.description);
+                detailIntent.putExtra("host", selected.hostName);
+//                detailIntent.putExtra("attendee_names", attendee_names);
+//                detailIntent.putExtra("attendee_emails", attendee_emails);
                 startActivity(detailIntent);
 //                Log.d("user" ,"name " + current_user.getName());
 
