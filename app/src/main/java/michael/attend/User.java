@@ -81,7 +81,7 @@ public class User {
         this.email = email;
     }
 
-    private String getEmail(){
+    public String getEmail(){
         return this.email;
     }
 

@@ -8,13 +8,13 @@
     android:background="@color/view_groups_bg">
 
     <!--<TextView-->
-        <!--android:id="@+id/no_groups"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="32dp"-->
-        <!--android:layout_marginStart="32dp"-->
-        <!--android:layout_marginLeft="32dp"-->
-        <!--android:text="No Current Groups..."/>-->
+    <!--android:id="@+id/no_groups"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="32dp"-->
+    <!--android:layout_marginStart="32dp"-->
+    <!--android:layout_marginLeft="32dp"-->
+    <!--android:text="No Current Groups..."/>-->
 
     <ListView
         android:id="@+id/group_list"

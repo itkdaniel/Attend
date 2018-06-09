@@ -35,7 +35,8 @@
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".ViewGroupsActivity" />
         <activity android:name=".DetailActivity" />
-        <activity android:name=".DetailActivityHost"></activity>
+        <activity android:name=".DetailActivityHost" />
+        <activity android:name=".JoinGroupActivity"></activity>
     </application>
 
 </manifest>

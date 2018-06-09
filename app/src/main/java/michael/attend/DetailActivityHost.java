@@ -1,6 +1,8 @@
 package michael.attend;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class DetailActivityHost extends AppCompatActivity {
 
+    Context context;
+    int position;
+    Intent i;
     String uid;
     ListView listView;
     Button takeAttendance;
@@ -37,14 +42,14 @@ public class DetailActivityHost extends AppCompatActivity {
         setContentView(R.layout.activity_detail_host);
         uid = LoginHome.user_uid;
 
-        Intent i = getIntent();
+        i = getIntent();
         String title = i.getStringExtra("title");
         String description = i.getStringExtra("description");
         String host = i.getStringExtra("host");
-        final int position = i.getIntExtra("position",0);
+        position = i.getIntExtra("position",0);
 
         takeAttendance = findViewById(R.id.take_attendance);
-
+        context = this;
         // this records the host's coordinates and sets takeAttendance  to valid
         takeAttendance.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -59,14 +64,15 @@ public class DetailActivityHost extends AppCompatActivity {
                 if (l != null) {
                     double lat = l.getLatitude();
                     double lon = l.getLongitude();
-
+//
+//
                     //makes attendance valid and record host's coordinates in firebase
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child(String.valueOf(position)).child("location").child("lat");
                     databaseReference.setValue(lat);
-
-                    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child(String.valueOf(position)).child("location").child("lon");
-                    databaseReference1.setValue(lon);
-
+                    Toast.makeText(context,"Taking attendance for (" + String.valueOf(position) + ")", Toast.LENGTH_LONG).show();
+//
+//                    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child(String.valueOf(position)).child("location").child("lon");
+//                    databaseReference1.setValue(lon);
                 }
             }
         });
