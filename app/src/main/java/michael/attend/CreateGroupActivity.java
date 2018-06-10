@@ -58,27 +58,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                try {
-//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                        ListData listdata = postSnapshot.getValue(ListData.class);
-//                        Log.d("ondatachange_listdata", listdata.toString());
-//
-//                        GroupsList.add(listdata);
-//                        if(GroupsList != null){
-//                            Log.d("ondatachange_usergroups", "groupslist not null !");
-//
-//                        }else{
-//                            Log.d("ondatachange_usergroups", "groupslist null >:[");
-//
-//                        }
-//                    }
-//                    for (int i = 0; i < GroupsList.size(); i++){
-//                        Log.d("ondatachange_groups", GroupsList.get(i).title);
-//
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+
                 Log.d("creategroup_listsize", String.valueOf(GroupsList.size()));
                 groupName = findViewById(R.id.group_name);
                 groupDescription = findViewById(R.id.group_description);
@@ -91,33 +71,20 @@ public class CreateGroupActivity extends AppCompatActivity {
                 group.description = groupDescription.getText().toString();
                 group.hostName = hostName.getText().toString();
 
-                Log.d("adding to user list", user1.getName());
+                Log.d("adding to user list", user1.getUid());
 
                 allGroups.title = groupName.getText().toString();
-
-
-
-
 
 
                 int request_permission = 1;
                 GPSLocator x = new GPSLocator(getApplicationContext());
                 Location l = x.getLocation();
                 if (l == null) {
-                    ActivityCompat.requestPermissions(CreateGroupActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_permission);
+                    ActivityCompat.requestPermissions(CreateGroupActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            request_permission);
                 }
 
-//                if (l != null) {
-//                    double lat = l.getLatitude();
-//                    double lon = l.getLongitude();
 //
-//                    //makes attendance valid and record host's coordinates in firebase
-//                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid).child("user_groups").child(String.valueOf(position)).child("location").child("lat");
-//                    databaseReference.setValue(lat);
-//
-//                    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid).child("user_groups").child(String.valueOf(position)).child("location").child("lon");
-//                    databaseReference1.setValue(lon);
-//                }
                 group.latitude = String.valueOf(l.getLatitude());
                 group.longitude = String.valueOf(l.getLongitude());
                 allGroups.latitude = String.valueOf(l.getLatitude());
@@ -125,14 +92,12 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 user1.addGroup(group);
                 GroupsList.add(group);
-//                totalGroups.add(group); //changed here
 
                 Log.d("GroupList: ", user1.groupList.toString());
                 mDatabase = FirebaseDatabase.getInstance().getReference();
-//                mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").setValue(GroupsList);
                 mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").child(group.title).setValue(group);
                 mDatabase.child("total_groups").child(allGroups.title).setValue(group);
-                mDatabase.child("total_groups").child(allGroups.title).child("Users").setValue(usersInGroup);
+
                 finish();
             }
 

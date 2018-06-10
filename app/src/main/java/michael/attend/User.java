@@ -33,7 +33,7 @@ public class User {
 
     // TODO: FOR LOGIN
     public User(String uid, String email, ArrayList<ListData> groups){
-        this.name = uid;
+        this.uid = uid;
         this.email = email;
         this.groupList = new ArrayList<ListData>();
     }
@@ -54,12 +54,12 @@ public class User {
         this.groupList = groupList;
     }
 
-    private void setId(int id){
-        this.id = id;
+    public void setUid(String id){
+        this.uid = id;
     }
 
-    private int getId(){
-        return this.id;
+    public String getUid(){
+        return this.uid;
     }
     private void setName(String name){
         this.name = name;

@@ -26,9 +26,9 @@ public class DetailActivityHost extends AppCompatActivity {
     String uid;
     ListView listView;
     Button takeAttendance;
-    String[] names ;
+    String[] names = {};
 
-    String[] emails ;
+    String[] emails ={};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +64,6 @@ public class DetailActivityHost extends AppCompatActivity {
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child(String.valueOf(position)).child("location").child("lat");
                     databaseReference.setValue(lat);
                     Toast.makeText(context,"Taking attendance for (" + String.valueOf(position) + ")", Toast.LENGTH_LONG).show();
-//
-//                    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child(String.valueOf(position)).child("location").child("lon");
-//                    databaseReference1.setValue(lon);
                 }
             }
         });

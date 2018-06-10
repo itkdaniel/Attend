@@ -86,7 +86,7 @@ public class LoginHome extends AppCompatActivity {
     }
 
     public void onClick_ViewGroups(View view) {
-        startActivity(new Intent(LoginHome.this, ViewGroupsActivity.class));
+        startActivity(new Intent(LoginHome.this, ChooseGroupActivity.class));
     }
 
     public void onClick_CreateGroup(View view) {

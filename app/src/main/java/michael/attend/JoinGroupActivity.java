@@ -43,49 +43,24 @@ public class JoinGroupActivity extends AppCompatActivity {
     public void onClick_JoinButton(View view) {
         current_user = LoginActivity.user1;
         groupName = findViewById(R.id.group_name);
-        userList = new ArrayList<User>();
         credentials = new User();
 
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("total_groups")
-                .child(groupName.getText().toString()).child("Users");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference dbr = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
+        dbr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        User listdata = postSnapshot.getValue(User.class);
-                        Log.d("ondatachange_listdata", listdata.toString());
+                User user = dataSnapshot.getValue(User.class);
 
-                        userList.add(listdata);
-                        if(userList != null){
-                            Log.d("ondatachange_usergroups", "groupslist not null !");
-
-                        }else{
-                            Log.d("ondatachange_usergroups", "groupslist null >:[");
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                credentials.name = current_user.getName();
+                credentials.name = user.name;
+                credentials.uid = current_user.getUid();
                 credentials.username = current_user.getEmail();
-                userList.add(credentials);
 
-                for (int i = 0; i < userList.size(); i++){
-                    Log.d("users_in_group", userList.get(i).name);
-
-                }
 
                 databaseRef = FirebaseDatabase.getInstance().getReference();
-                databaseRef.child("total_groups").child(groupName.getText().toString()).child("Users").setValue(userList);
+                databaseRef.child("total_groups").child(groupName.getText().toString()).child("Users").child(current_uid).setValue(credentials);
 
                 finish();
             }
-
-
-
 
 
             @Override
@@ -98,41 +73,15 @@ public class JoinGroupActivity extends AppCompatActivity {
         DatabaseReference db1 = FirebaseDatabase.getInstance().getReference()
                 .child("Users").child(current_uid).child("user_groups").child("student_groups");
 
-
-        studentGroupList = new ArrayList<ListData>();
-
-
         db1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        ListData listdata = postSnapshot.getValue(ListData.class);
-                        Log.d("ondatachange_listdata", listdata.toString());
 
-                        studentGroupList.add(listdata);
-
-                        if(userList != null){
-                            Log.d("ondatachange_usergroups", "groupslist not null !");
-
-                        }else{
-                            Log.d("ondatachange_usergroups", "groupslist null >:[");
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-//                final ArrayList<ListData> studentGroupList = new ArrayList<ListData>();
                 studentGroup = new ListData();
-
 
                 //add to Users at first index of 'group name' input
                 DatabaseReference dbr1 = FirebaseDatabase.getInstance().getReference().child("total_groups").
                         child(groupName.getText().toString());
-
 
                 dbr1.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -143,8 +92,6 @@ public class JoinGroupActivity extends AppCompatActivity {
                         studentGroup.latitude = listData.latitude;
                         studentGroup.longitude = listData.longitude;
                         studentGroup.title = listData.title;
-
-                        studentGroupList.add(studentGroup);
 
                         databaseRef.child("users").child(current_uid).child("user_groups")
                                 .child("student_groups").child(studentGroup.title).setValue(studentGroup);
@@ -162,11 +109,6 @@ public class JoinGroupActivity extends AppCompatActivity {
 
                     }
                 });
-
-
-                for(int i = 0; i < studentGroupList.size(); i++) {
-                    Log.d("studentGroupList", String.valueOf(studentGroupList.get(i).inSession) + " " + String.valueOf(studentGroupList.get(i).latitude+ " " + String.valueOf(studentGroupList.get(i).longitude)) + " " + String.valueOf(studentGroupList.get(i).title));
-                }
 
                 finish();
             }
