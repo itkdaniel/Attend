@@ -61,7 +61,11 @@ public class ViewGroupsActivity extends AppCompatActivity{
     public void get_view_groups_data(){
         GroupsList=new ArrayList<ListData>();
         mContext = this;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups");
+
+        //TODO: need to create userView
+
+        //start at hostView and print out all hosted groups
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child("host_groups");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -53,7 +53,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         totalGroups = new ArrayList<ListData>();
         usersInGroup = new ArrayList<User>();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid).child("user_groups");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(current_uid).child("user_groups");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,8 +83,10 @@ public class CreateGroupActivity extends AppCompatActivity {
                 groupName = findViewById(R.id.group_name);
                 groupDescription = findViewById(R.id.group_description);
                 hostName = findViewById(R.id.host_name);
+
                 ListData group = new ListData();
                 ListData allGroups = new ListData();
+
                 group.title = groupName.getText().toString();
                 group.description = groupDescription.getText().toString();
                 group.hostName = hostName.getText().toString();
@@ -122,10 +125,10 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 user1.addGroup(group);
                 GroupsList.add(group);
-                totalGroups.add(allGroups);
+                totalGroups.add(group); //changed here
                 Log.d("GroupList: ", user1.groupList.toString());
                 mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("users").child(current_uid).child("user_groups").setValue(GroupsList);
+                mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").setValue(GroupsList);
                 mDatabase.child("total_groups").child(allGroups.title).setValue(totalGroups);
                 mDatabase.child("total_groups").child(allGroups.title).child("0").child("Users").setValue(usersInGroup);
                 finish();

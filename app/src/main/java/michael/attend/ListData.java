@@ -14,4 +14,5 @@ public class ListData {
     public boolean inSession;
 
     ArrayList<User> attendees;
+    ArrayList<ListData> studentGroups;
 }

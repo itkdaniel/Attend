@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +24,9 @@ public class JoinGroupActivity extends AppCompatActivity {
     DatabaseReference databaseRef;
     ArrayList<User> userList;
     User credentials;
+
+    ArrayList<ListData> studentGroupList;
+    ListData studentGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,8 @@ public class JoinGroupActivity extends AppCompatActivity {
         userList = new ArrayList<User>();
         credentials = new User();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("total_groups").child(groupName.getText().toString()).child("0").child("Users");
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("total_groups")
+                .child(groupName.getText().toString()).child("0").child("Users");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -64,10 +69,10 @@ public class JoinGroupActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
                 credentials.name = current_user.getName();
                 credentials.username = current_user.getEmail();
                 userList.add(credentials);
+
                 for (int i = 0; i < userList.size(); i++){
                     Log.d("users_in_group", userList.get(i).name);
 
@@ -76,16 +81,78 @@ public class JoinGroupActivity extends AppCompatActivity {
                 databaseRef = FirebaseDatabase.getInstance().getReference();
                 databaseRef.child("total_groups").child(groupName.getText().toString()).child("0").child("Users").setValue(userList);
 
-
-
                 finish();
             }
+
+
+
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
+
+        DatabaseReference db1 = FirebaseDatabase.getInstance().getReference()
+                .child("Users").child(current_uid).child("user_groups").child("student_groups");
+
+
+        studentGroupList = new ArrayList<ListData>();
+
+
+        db1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        ListData listdata = postSnapshot.getValue(ListData.class);
+                        Log.d("ondatachange_listdata", listdata.toString());
+
+                        studentGroupList.add(listdata);
+
+                        if(userList != null){
+                            Log.d("ondatachange_usergroups", "groupslist not null !");
+
+                        }else{
+                            Log.d("ondatachange_usergroups", "groupslist null >:[");
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                ArrayList<ListData> studentGroupList = new ArrayList<ListData>();
+                studentGroup = new ListData();
+
+                DatabaseReference dbr1 = FirebaseDatabase.getInstance().getReference().child("total_groups").
+                        child(groupName.getText().toString()).child("0");
+
+
+                studentGroup.inSession = dbr1.get("inSession").toString().equals("True");
+                studentGroup.latitude = dbr1.child("latitude").toString();
+                studentGroup.longitude = dbr1.child("longitude").toString();
+                studentGroup.title = dbr1.child("title").toString();
+
+                studentGroupList.add(studentGroup);
+
+                databaseRef.child("users").child(current_uid).child("user_groups")
+                            .child("student_groups").setValue(studentGroupList);
+
+
+                finish();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // adds group to user's student groups
+
 
 //        mDatabase.child("total_groups").child("wadu").setValue(userList);
     }

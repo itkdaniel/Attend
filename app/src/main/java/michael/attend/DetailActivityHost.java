@@ -26,15 +26,9 @@ public class DetailActivityHost extends AppCompatActivity {
     String uid;
     ListView listView;
     Button takeAttendance;
-    String[] names = {
-            "Hung Lo", "LetsGo",
-            "TestGuy", "NewGuy"
-    };
+    String[] names ;
 
-    String[] emails = {
-            "hungLo@test.com", "LetsGo@test.com",
-            "testGuy@test.com", "NewGuy@test.com"
-    };
+    String[] emails ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
