@@ -125,12 +125,14 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 user1.addGroup(group);
                 GroupsList.add(group);
-                totalGroups.add(group); //changed here
+//                totalGroups.add(group); //changed here
+
                 Log.d("GroupList: ", user1.groupList.toString());
                 mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").setValue(GroupsList);
-                mDatabase.child("total_groups").child(allGroups.title).setValue(totalGroups);
-                mDatabase.child("total_groups").child(allGroups.title).child("0").child("Users").setValue(usersInGroup);
+//                mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").setValue(GroupsList);
+                mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").child(group.title).setValue(group);
+                mDatabase.child("total_groups").child(allGroups.title).setValue(group);
+                mDatabase.child("total_groups").child(allGroups.title).child("Users").setValue(usersInGroup);
                 finish();
             }
 

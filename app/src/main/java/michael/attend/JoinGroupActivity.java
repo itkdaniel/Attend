@@ -47,7 +47,7 @@ public class JoinGroupActivity extends AppCompatActivity {
         credentials = new User();
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("total_groups")
-                .child(groupName.getText().toString()).child("0").child("Users");
+                .child(groupName.getText().toString()).child("Users");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,7 +79,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                 }
 
                 databaseRef = FirebaseDatabase.getInstance().getReference();
-                databaseRef.child("total_groups").child(groupName.getText().toString()).child("0").child("Users").setValue(userList);
+                databaseRef.child("total_groups").child(groupName.getText().toString()).child("Users").setValue(userList);
 
                 finish();
             }
@@ -125,23 +125,48 @@ public class JoinGroupActivity extends AppCompatActivity {
                 }
 
 
-                ArrayList<ListData> studentGroupList = new ArrayList<ListData>();
+//                final ArrayList<ListData> studentGroupList = new ArrayList<ListData>();
                 studentGroup = new ListData();
 
+
+                //add to Users at first index of 'group name' input
                 DatabaseReference dbr1 = FirebaseDatabase.getInstance().getReference().child("total_groups").
-                        child(groupName.getText().toString()).child("0");
+                        child(groupName.getText().toString());
 
 
-                studentGroup.inSession = dbr1.get("inSession").toString().equals("True");
-                studentGroup.latitude = dbr1.child("latitude").toString();
-                studentGroup.longitude = dbr1.child("longitude").toString();
-                studentGroup.title = dbr1.child("title").toString();
+                dbr1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ListData listData = dataSnapshot.getValue(ListData.class);
 
-                studentGroupList.add(studentGroup);
+                        studentGroup.inSession = listData.inSession;
+                        studentGroup.latitude = listData.latitude;
+                        studentGroup.longitude = listData.longitude;
+                        studentGroup.title = listData.title;
 
-                databaseRef.child("users").child(current_uid).child("user_groups")
-                            .child("student_groups").setValue(studentGroupList);
+                        studentGroupList.add(studentGroup);
 
+                        databaseRef.child("users").child(current_uid).child("user_groups")
+                                .child("student_groups").child(studentGroup.title).setValue(studentGroup);
+
+
+                        Log.d("student", studentGroup.toString());
+
+                        Log.d("studentGroup", "here they are: " + listData.inSession + " " +listData.latitude + " "
+                                + studentGroup.longitude);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                for(int i = 0; i < studentGroupList.size(); i++) {
+                    Log.d("studentGroupList", String.valueOf(studentGroupList.get(i).inSession) + " " + String.valueOf(studentGroupList.get(i).latitude+ " " + String.valueOf(studentGroupList.get(i).longitude)) + " " + String.valueOf(studentGroupList.get(i).title));
+                }
 
                 finish();
             }
