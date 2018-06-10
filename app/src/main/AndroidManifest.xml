@@ -33,11 +33,12 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
         <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".ViewGroupsActivity" />
         <activity android:name=".DetailActivityHost" />
         <activity android:name=".JoinGroupActivity" />
         <activity android:name=".ChooseGroupActivity" />
-        <activity android:name=".DetailActivityStudent"></activity>
+        <activity android:name=".DetailActivityStudent" />
+        <activity android:name=".ViewGroupsHostActivity" />
+        <activity android:name=".ViewGroupsStudentActivity"></activity>
     </application>
 
 </manifest>

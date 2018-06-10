@@ -15,26 +15,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class DetailActivityHost extends AppCompatActivity {
 
     Context context;
     int position;
     Intent i;
-    String uid;
+    String current_uid;
     ListView listView;
     Button takeAttendance;
     String[] names = {};
-
-    String[] emails ={};
+    String[] emails = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_host);
-        uid = LoginHome.user_uid;
+        current_uid = LoginHome.user_uid;
 
         i = getIntent();
         String title = i.getStringExtra("title");
@@ -47,32 +49,30 @@ public class DetailActivityHost extends AppCompatActivity {
         // this records the host's coordinates and sets takeAttendance  to valid
         takeAttendance.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int request_permission = 1;
-                GPSLocator x = new GPSLocator(getApplicationContext());
-                Location l = x.getLocation();
-                if (l == null) {
-                    ActivityCompat.requestPermissions(DetailActivityHost.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_permission);
-
-
-                }
-                if (l != null) {
-                    double lat = l.getLatitude();
-                    double lon = l.getLongitude();
-//
-//
-                    //makes attendance valid and record host's coordinates in firebase
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("user_groups").child(String.valueOf(position)).child("location").child("lat");
-                    databaseReference.setValue(lat);
-                    Toast.makeText(context,"Taking attendance for (" + String.valueOf(position) + ")", Toast.LENGTH_LONG).show();
-                }
+                // compare coordinates
             }
         });
-
-
 
         TextView event_title = (TextView) findViewById(R.id.group_name);
         TextView event_description = (TextView) findViewById(R.id.group_description);
         TextView event_host = (TextView) findViewById(R.id.host_name);
+
+        DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid)
+                .child("user_groups").child("host_groups");
+
+        dbf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         event_title.setText(title);
         event_description.setText(description);

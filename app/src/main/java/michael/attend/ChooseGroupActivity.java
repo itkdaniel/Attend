@@ -21,7 +21,7 @@ public class ChooseGroupActivity extends AppCompatActivity {
         buttonHost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChooseGroupActivity.this, DetailActivityHost.class);
+                Intent intent = new Intent(ChooseGroupActivity.this, ViewGroupsHostActivity.class);
                 startActivity(intent);
             }
         });
@@ -30,7 +30,7 @@ public class ChooseGroupActivity extends AppCompatActivity {
         buttonStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChooseGroupActivity.this, DetailActivityStudent.class);
+                Intent intent = new Intent(ChooseGroupActivity.this, ViewGroupsStudentActivity.class);
                 startActivity(intent);
             }
         });

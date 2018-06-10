@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ViewGroupsActivity extends AppCompatActivity{
+public class ViewGroupsHostActivity extends AppCompatActivity{
 
     ArrayList<ListData> GroupsList;
     User user1 = LoginActivity.user1;
@@ -40,7 +40,7 @@ public class ViewGroupsActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_groups);
+        setContentView(R.layout.activity_view_groups_host);
 
         init_variables();
         get_view_groups_data();
