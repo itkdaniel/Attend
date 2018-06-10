@@ -58,27 +58,27 @@ public class CreateGroupActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        ListData listdata = postSnapshot.getValue(ListData.class);
-                        Log.d("ondatachange_listdata", listdata.toString());
-
-                        GroupsList.add(listdata);
-                        if(GroupsList != null){
-                            Log.d("ondatachange_usergroups", "groupslist not null !");
-
-                        }else{
-                            Log.d("ondatachange_usergroups", "groupslist null >:[");
-
-                        }
-                    }
-                    for (int i = 0; i < GroupsList.size(); i++){
-                        Log.d("ondatachange_groups", GroupsList.get(i).title);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                        ListData listdata = postSnapshot.getValue(ListData.class);
+//                        Log.d("ondatachange_listdata", listdata.toString());
+//
+//                        GroupsList.add(listdata);
+//                        if(GroupsList != null){
+//                            Log.d("ondatachange_usergroups", "groupslist not null !");
+//
+//                        }else{
+//                            Log.d("ondatachange_usergroups", "groupslist null >:[");
+//
+//                        }
+//                    }
+//                    for (int i = 0; i < GroupsList.size(); i++){
+//                        Log.d("ondatachange_groups", GroupsList.get(i).title);
+//
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 Log.d("creategroup_listsize", String.valueOf(GroupsList.size()));
                 groupName = findViewById(R.id.group_name);
                 groupDescription = findViewById(R.id.group_description);
@@ -90,7 +90,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 group.title = groupName.getText().toString();
                 group.description = groupDescription.getText().toString();
                 group.hostName = hostName.getText().toString();
-                usersInGroup.add(user1);
+
                 Log.d("adding to user list", user1.getName());
 
                 allGroups.title = groupName.getText().toString();
