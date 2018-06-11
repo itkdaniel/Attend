@@ -207,6 +207,15 @@
                 android:background="@color/colorAccent"
                 android:layout_marginBottom="16dp"/>
 
+            <Button
+                android:id="@+id/change_gps"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Set Group Location to Your Location"
+                android:background="@color/colorAccent"
+                android:layout_marginBottom="16dp"/>
+
         </LinearLayout>
 
     </ScrollView>

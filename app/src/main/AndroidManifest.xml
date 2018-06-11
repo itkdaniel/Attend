@@ -38,7 +38,8 @@
         <activity android:name=".ChooseGroupActivity" />
         <activity android:name=".DetailActivityStudent" />
         <activity android:name=".ViewGroupsHostActivity" />
-        <activity android:name=".ViewGroupsStudentActivity"></activity>
+        <activity android:name=".ViewGroupsStudentActivity" />
+        <activity android:name=".UserHistoryHostView"></activity>
     </application>
 
 </manifest>

@@ -37,11 +37,11 @@ public class DetailActivityHost extends AppCompatActivity {
     String current_uid;
     ListView listView;
     TextView no_students;
-    Button takeAttendance;
+    Button takeAttendance, stopAttendance, changeGPS;
     String[] names;
     String[] emails;
     ArrayList<User> users;
-    DatabaseReference dbr;
+    DatabaseReference dbr,dbr1;
     String title,description, host;
     CustomListAdapter adapter;
     TextView event_title, event_description, event_host;
@@ -64,24 +64,50 @@ public class DetailActivityHost extends AppCompatActivity {
         position = i.getIntExtra("position",0);
         Log.d("user_in_group_name", title);
 
+        dbr1 = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title);
 
         takeAttendance = findViewById(R.id.take_attendance);
-//        context = this;
-        // this records the host's coordinates and sets takeAttendance  to valid
+        stopAttendance = findViewById(R.id.stop_attendance);
+        changeGPS = findViewById(R.id.change_gps);
+
+        // this sets takeAttendance to true
         takeAttendance.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { dbr1.child("inSession").setValue(true); }
+        });
+
+        //  this sets takeAttendance to false
+        stopAttendance.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) { dbr1.child("inSession").setValue(false); }
+        });
+        //changes group's gps coordinates to host's current coordinates
+        changeGPS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // compare coordinates
+
+                int request_permission = 1;
+                GPSLocator x = new GPSLocator(getApplicationContext());
+                Location l = x.getLocation();
+                if (l == null) {
+                    ActivityCompat.requestPermissions(DetailActivityHost.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            request_permission);
+                }
+
+//
+                String latitude = String.valueOf(l.getLatitude());
+                String longitude = String.valueOf(l.getLongitude());
+
+                dbr1.child("latitude").setValue(latitude);
+                dbr1.child("longitude").setValue(longitude);
+
             }
         });
+
+
 
         event_title = (TextView) findViewById(R.id.group_name);
         event_description = (TextView) findViewById(R.id.group_description);
         event_host = (TextView) findViewById(R.id.host_name);
 
-
         // populating listview with students
-
-
 
         dbr = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title).child("Users");
         users = new ArrayList<User>();
@@ -126,6 +152,8 @@ public class DetailActivityHost extends AppCompatActivity {
                               @Override
                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                   if (position > -1) {
+
+                                      
                                       Toast.makeText(getApplicationContext(), names[position] + " - " + emails[position], Toast.LENGTH_LONG).show();
                                   }
                               }
@@ -148,28 +176,6 @@ public class DetailActivityHost extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) { }
             });
 
-//        try {
-//            event_title.setText(title);
-//            event_description.setText(description);
-//            event_host.setText(host);
-//
-//            adapter = new CustomListAdapter(DetailActivityHost.this, names, emails);
-//            listView.setAdapter(adapter);
-//
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    if (position > -1) {
-//                        Toast.makeText(getApplicationContext(), names[position] + " - " + emails[position], Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            });
-//        }
-//        catch (NullPointerException e) {
-//
-//            no_students.setVisibility(View.VISIBLE);
-//            listView.setVisibility(View.INVISIBLE);
-//        }
 
 
 
