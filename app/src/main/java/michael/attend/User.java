@@ -8,7 +8,6 @@ public class User {
 
     public String name, username, email, password, uid;
     public ArrayList<ListData> groupList;
-    public ArrayList<String> hostGroupList;
 
 //    User DataBase "Table":
 //    Name, Email, userGroups, hostGroups
@@ -73,7 +72,7 @@ public class User {
         this.username = username;
     }
 
-    private String getUsername(){
+    public String getUsername(){
         return this.username;
     }
 

@@ -16,7 +16,7 @@ public class ChooseGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_group);
 
-        Button buttonHost = findViewById(R.id.host_button);
+        buttonHost = findViewById(R.id.host_button);
 
         buttonHost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,7 +25,7 @@ public class ChooseGroupActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button buttonStudent = findViewById(R.id.student_button);
+        buttonStudent = findViewById(R.id.student_button);
 
         buttonStudent.setOnClickListener(new View.OnClickListener() {
             @Override

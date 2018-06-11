@@ -53,7 +53,7 @@ public class JoinGroupActivity extends AppCompatActivity {
 
                 credentials.name = user.name;
                 credentials.uid = current_user.getUid();
-                credentials.username = current_user.getEmail();
+                credentials.email = current_user.getEmail();
 
 
                 databaseRef = FirebaseDatabase.getInstance().getReference();
@@ -92,6 +92,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                         studentGroup.latitude = listData.latitude;
                         studentGroup.longitude = listData.longitude;
                         studentGroup.title = listData.title;
+                        studentGroup.description = listData.description;
 
                         databaseRef.child("users").child(current_uid).child("user_groups")
                                 .child("student_groups").child(studentGroup.title).setValue(studentGroup);

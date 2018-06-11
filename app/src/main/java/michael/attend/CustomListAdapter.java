@@ -11,12 +11,12 @@ import java.util.ArrayList;
 
 public class CustomListAdapter extends ArrayAdapter<String>{
 
-    private final Activity context;
-//    private final ArrayList<User> users;
-    private final String[] names;
-    private final String[] emails;
+    Activity context;
+    //    private final ArrayList<User> users;
+    String[] names;
+    String[] emails;
 
-//    public CustomListAdapter(Activity context, String[] names, String[] emails, ArrayList<User> users){
+    //    public CustomListAdapter(Activity context, String[] names, String[] emails, ArrayList<User> users){
     public CustomListAdapter(Activity context, String[] names, String[] emails){
 
         super(context, R.layout.custom_list_item, names);
