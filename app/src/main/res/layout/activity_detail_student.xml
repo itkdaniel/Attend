@@ -143,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
-                        android:text="Log Information"
+                        android:text="Attendance History"
                         android:textColor="@color/colorPrimary"
                         android:textSize="15sp" />
 
@@ -170,7 +170,7 @@
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Take Attendance"
+                android:text="Record Attendance"
                 android:background="@color/colorAccent"
                 android:layout_marginBottom="16dp"/>
 

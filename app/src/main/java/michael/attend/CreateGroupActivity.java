@@ -71,6 +71,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 group.description = groupDescription.getText().toString();
                 group.hostName = hostName.getText().toString();
 
+
                 Log.d("adding to user list", user1.getUid());
 
                 allGroups.title = groupName.getText().toString();
@@ -97,6 +98,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 mDatabase = FirebaseDatabase.getInstance().getReference();
                 mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").child(group.title).setValue(group);
+                group.numEvents = "0";
                 mDatabase.child("total_groups").child(allGroups.title).setValue(group);
 
                 finish();

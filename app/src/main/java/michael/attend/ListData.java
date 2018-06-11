@@ -11,6 +11,7 @@ public class ListData {
     public String hostName;
     public String sessionTime;
     public String sessionDate;
+    public String numEvents;
 //    public String hostKey;
 //    public String users;
     public boolean inSession;

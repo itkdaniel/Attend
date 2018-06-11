@@ -27,13 +27,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class DetailActivityHost extends AppCompatActivity {
 
     Context context;
-    int position;
     Intent i;
+    String time, date;
     String current_uid;
     ListView listView;
     TextView no_students;
@@ -45,7 +48,8 @@ public class DetailActivityHost extends AppCompatActivity {
     String title,description, host;
     CustomListAdapter adapter;
     TextView event_title, event_description, event_host;
-
+    String position;
+    Event current;
 
 
     @Override
@@ -61,7 +65,6 @@ public class DetailActivityHost extends AppCompatActivity {
         title = i.getStringExtra("title");
         description = i.getStringExtra("description");
         host = i.getStringExtra("host");
-        position = i.getIntExtra("position",0);
         Log.d("user_in_group_name", title);
 
         dbr1 = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title);
@@ -72,13 +75,67 @@ public class DetailActivityHost extends AppCompatActivity {
 
         // this sets takeAttendance to true
         takeAttendance.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { dbr1.child("inSession").setValue(true); }
+            public void onClick(View v) {
+
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss a");
+                time = timeFormat.format(calendar.getTime());
+
+                //date
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                date = dateFormat.format(calendar.getTime());
+
+                //fetch numEvents from total_groups
+                dbr1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        current = new Event();
+                        current.time = time;
+                        current.date = date;
+
+                        ListData ld = dataSnapshot.getValue(ListData.class);
+
+                        position = ld.numEvents;
+
+                        Log.d("position_log: ", position);
+
+                        if(ld.inSession == false) {
+
+                            dbr1.child("History").child(position).setValue(current);
+
+                            int pos = Integer.parseInt(ld.numEvents);
+                            pos++;
+                            dbr1.child("numEvents").setValue(Integer.toString(pos));
+                        }
+                        dbr1.child("inSession").setValue(true);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                changeGPS.setEnabled(false);
+                takeAttendance.setEnabled(false);
+                stopAttendance.setEnabled(true);
+
+            }
         });
 
         //  this sets takeAttendance to false
         stopAttendance.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { dbr1.child("inSession").setValue(false); }
+            public void onClick(View v) {
+                dbr1.child("inSession").setValue(false);
+
+                takeAttendance.setEnabled(true);
+                changeGPS.setEnabled(true);
+                stopAttendance.setEnabled(false);
+            }
         });
+
         //changes group's gps coordinates to host's current coordinates
         changeGPS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
