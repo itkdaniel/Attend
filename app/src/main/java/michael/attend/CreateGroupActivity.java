@@ -94,7 +94,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 GroupsList.add(group);
 
                 Log.d("GroupList: ", user1.groupList.toString());
-                
+
                 mDatabase = FirebaseDatabase.getInstance().getReference();
                 mDatabase.child("users").child(current_uid).child("user_groups").child("host_groups").child(group.title).setValue(group);
                 mDatabase.child("total_groups").child(allGroups.title).setValue(group);

@@ -247,7 +247,8 @@ public class ViewGroupsHostActivity extends AppCompatActivity{
 //                    attendee_names[i] = selected.attendees.get(i).name;
 //                    attendee_emails[i] = selected.attendees.get(i).email;
 //                }
-                Toast.makeText(mContext, selected.title, Toast.LENGTH_LONG).show(); // Toast Group Name
+//                Toast.makeText(mContext, selected.title, Toast.LENGTH_LONG).show(); // Toast Group Name
+
                 Intent detailIntent = new Intent(mContext, DetailActivityHost.class);
                 detailIntent.putExtra("title", selected.title);
                 detailIntent.putExtra("description", selected.description);

@@ -152,8 +152,15 @@ public class DetailActivityHost extends AppCompatActivity {
                               @Override
                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                   if (position > -1) {
+        //                            view's student's attendance history
 
-                                      
+//                                      Intent detailIntent = new Intent(context, DetailActivityHost.class);
+//                                      detailIntent.putExtra("title", title);
+//                                      detailIntent.putExtra("description", selected.description);
+//                                      detailIntent.putExtra("host", selected.hostName);
+///
+//                                      startActivity(detailIntent);
+
                                       Toast.makeText(getApplicationContext(), names[position] + " - " + emails[position], Toast.LENGTH_LONG).show();
                                   }
                               }
