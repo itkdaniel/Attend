@@ -69,7 +69,7 @@ public class DetailActivityHost extends AppCompatActivity {
         host = i.getStringExtra("host");
         Log.d("user_in_group_name", title);
 
-        dbr1 = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title);
+        dbr1 = FirebaseDatabase.getInstance().getReference();
 
         takeAttendance = findViewById(R.id.take_attendance);
         stopAttendance = findViewById(R.id.stop_attendance);
@@ -88,7 +88,7 @@ public class DetailActivityHost extends AppCompatActivity {
                 date = dateFormat.format(calendar.getTime());
 
                 //fetch numEvents from total_groups
-                dbr1.addListenerForSingleValueEvent(new ValueEventListener() {
+                dbr1.child("total_groups").child(title).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -104,14 +104,14 @@ public class DetailActivityHost extends AppCompatActivity {
 
                         if(ld.inSession == false) {
 
-                            dbr1.child("History").child(position).setValue(current);
+                            dbr1.child("total_groups").child(title).child("History").child(position).setValue(current);
 
                             int pos = Integer.parseInt(ld.numEvents);
                             pos++;
-                            dbr1.child("numEvents").setValue(Integer.toString(pos));
+                            dbr1.child("total_groups").child(title).child("numEvents").setValue(Integer.toString(pos));
                         }
 
-                        dbr1.child("inSession").setValue(true);
+                        dbr1.child("total_groups").child(title).child("inSession").setValue(true);
 
                     }
 
@@ -131,7 +131,9 @@ public class DetailActivityHost extends AppCompatActivity {
         //  this sets takeAttendance to false
         stopAttendance.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dbr1.child("inSession").setValue(false);
+                Log.d("Debug", "Debugging stopAttendance");
+
+                dbr1.child("total_groups").child(title).child("inSession").setValue(false);
 
                 takeAttendance.setEnabled(true);
                 changeGPS.setEnabled(true);
@@ -155,8 +157,8 @@ public class DetailActivityHost extends AppCompatActivity {
                 String latitude = String.valueOf(l.getLatitude());
                 String longitude = String.valueOf(l.getLongitude());
 
-                dbr1.child("latitude").setValue(latitude);
-                dbr1.child("longitude").setValue(longitude);
+                dbr1.child("total_groups").child(title).child("latitude").setValue(latitude);
+                dbr1.child("total_groups").child(title).child("longitude").setValue(longitude);
 
             }
         });
@@ -241,6 +243,9 @@ public class DetailActivityHost extends AppCompatActivity {
 
     }
     public void onBackPressed(){
-        finish();
+        Intent i = new Intent(this, ViewGroupsHostActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+//        finish();
     }
 }

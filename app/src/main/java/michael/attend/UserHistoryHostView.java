@@ -101,9 +101,9 @@ public class UserHistoryHostView extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                                 try {
+                                    int q = 0;
                                     for (int i = 0; i < eventListGroup.size(); i++) {
 
-                                        int q = 0;
                                         Event temp = new Event();
                                         if (eventListUser.get(q).pos.equals(String.valueOf(i))) {
                                             temp = eventListGroup.get(i);

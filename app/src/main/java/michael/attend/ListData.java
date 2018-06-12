@@ -9,13 +9,9 @@ public class ListData {
     public String longitude;
     public String description;
     public String hostName;
-    public String sessionTime;
-    public String sessionDate;
     public String numEvents;
-//    public String hostKey;
-//    public String users;
     public boolean inSession;
-
+    ArrayList<Event> history;
     ArrayList<User> attendees;
     ArrayList<ListData> studentGroups;
 }
