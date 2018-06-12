@@ -55,6 +55,7 @@ public class UserHistoryHostView extends AppCompatActivity {
 
                         User user = postSnapshot.getValue(User.class);
                         userList.add(user);
+                        Log.d("test123", "user: " + user);
 
                     }
                 }
