@@ -175,15 +175,14 @@ public class DetailActivityHost extends AppCompatActivity {
 
         dbr = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title).child("Users");
         users = new ArrayList<User>();
-        Query query = dbr;
 
          Log.d("user_in_group_name", dbr.child(current_uid).toString());
 
 
-         query.addListenerForSingleValueEvent(new ValueEventListener() {
+         dbr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
-                  if(dataSnapshot.exists()) {
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 //                    users.add(snapshot.getValue(User.class));
 //                    Log.d("user_in_group_name", "inside ondatachange");
@@ -232,13 +231,9 @@ public class DetailActivityHost extends AppCompatActivity {
                           no_students.setVisibility(View.VISIBLE);
                           listView.setVisibility(View.INVISIBLE);
                       }
-
-                    }
-                    else {
-                        Log.d("user_in", "nothing found");
                     }
 
-                }
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) { }

@@ -199,14 +199,15 @@
                 android:text="Take Attendance"
                 android:background="@color/colorAccent"
                 android:layout_marginBottom="16dp"/>
+
             <Button
                 android:id="@+id/stop_attendance"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Stop Attendance"
+                android:layout_marginBottom="16dp"
                 android:background="@color/colorAccent"
-                android:layout_marginBottom="16dp"/>
+                android:text="Stop Attendance" />
 
             <Button
                 android:id="@+id/change_gps"

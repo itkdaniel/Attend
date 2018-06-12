@@ -100,34 +100,37 @@ public class UserHistoryHostView extends AppCompatActivity {
                                 catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                                try {
+                                    for (int i = 0; i < eventListGroup.size(); i++) {
 
-                                for(int i = 0; i < eventListGroup.size(); i++) {
+                                        int q = 0;
+                                        Event temp = new Event();
+                                        if (eventListUser.get(q).pos.equals(String.valueOf(i))) {
+                                            temp = eventListGroup.get(i);
+                                            temp.record = "present";
+                                            finalList.add(temp);
+                                            q++;
+                                        } else {
+                                            temp = eventListGroup.get(i);
+                                            temp.record = "absent";
+                                            finalList.add(temp);
+                                        }
+                                        dates = new String[finalList.size()];
+                                        times = new String[finalList.size()];
+                                        records = new String[finalList.size()];
 
-                                    int q = 0;
-                                    Event temp = new Event();
-                                    if(eventListUser.get(q).pos.equals(String.valueOf(i))) {
-                                        temp = eventListGroup.get(i);
-                                        temp.record = "present";
-                                        finalList.add(temp);
-                                        q++;
+                                        for (int j = 0; j < finalList.size(); j++) {
+                                            dates[j] = finalList.get(j).date;
+                                            times[j] = finalList.get(j).time;
+                                            records[j] = finalList.get(j).record;
+                                        }
+
+                                        ListViewAdaptor eventAdapter = new ListViewAdaptor(UserHistoryHostView.this, dates, times, records);
+                                        listView.setAdapter(eventAdapter);
                                     }
-                                    else {
-                                        temp = eventListGroup.get(i);
-                                        temp.record = "absent";
-                                        finalList.add(temp);
-                                    }
-                                    dates = new String[finalList.size()];
-                                    times = new String[finalList.size()];
-                                    records = new String[finalList.size()];
+                                }
+                                catch (Exception e) {
 
-                                    for(int j = 0; j < finalList.size(); j++){
-                                        dates[j] = finalList.get(j).date;
-                                        times[j] = finalList.get(j).time;
-                                        records[j] = finalList.get(j).record;
-                                    }
-
-                                    ListViewAdaptor eventAdapter = new ListViewAdaptor(UserHistoryHostView.this, dates, times, records);
-                                    listView.setAdapter(eventAdapter);
                                 }
                             }
 
