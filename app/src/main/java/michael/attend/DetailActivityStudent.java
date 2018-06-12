@@ -43,6 +43,11 @@ public class DetailActivityStudent extends AppCompatActivity {
     String date;
     ArrayList<ListData> studentLog;
     ArrayList<ListData> displayLog;
+    DatabaseReference dbr;
+    ArrayList<User> userList;
+    String userID;
+    ArrayList<Event> eventListGroup, eventListUser, finalList;
+    String[] dates, times, records;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,13 @@ public class DetailActivityStudent extends AppCompatActivity {
 
         recordAttendance = findViewById(R.id.student_take_attendance);
         studentLog = new ArrayList<ListData>();
+
+        eventListGroup = new ArrayList<Event>();
+        eventListUser = new ArrayList<Event>();
+        finalList = new ArrayList<Event>();
+
+        listView = findViewById(R.id.student_attendees);
+
 
 
         recordAttendance.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +91,8 @@ public class DetailActivityStudent extends AppCompatActivity {
                         GPSLocator x = new GPSLocator(getApplicationContext());
                         Location l = x.getLocation();
                         if (l == null) {
-                            ActivityCompat.requestPermissions(DetailActivityStudent.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                    request_permission);
+                            ActivityCompat.requestPermissions(DetailActivityStudent.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, request_permission);
                         }
 
 //
@@ -93,7 +105,8 @@ public class DetailActivityStudent extends AppCompatActivity {
                         double dlat = studentLatitude - groupLatitude;
                         double dlon = studentLongitude - groupLongitude;
 
-                        double a = Math.pow(Math.sin(dlat/2),2) + Math.cos(groupLatitude) * Math.cos(studentLatitude) * Math.pow(Math.sin(dlon/2),2);
+                        double a = Math.pow(Math.sin(dlat/2),2) + Math.cos(groupLatitude)
+                                * Math.cos(studentLatitude) * Math.pow(Math.sin(dlon/2),2);
                         double c = 2 * atan2( Math.sqrt(a), Math.sqrt(1-a) );
                         double d =  c * 3959;
 
@@ -112,10 +125,13 @@ public class DetailActivityStudent extends AppCompatActivity {
                             Event event = new Event();
                             event.time = time;
                             event.date = date;
+                            event.pos = ld.numEvents;
 
                             int i = Integer.valueOf(ld.numEvents);
                             i--;
                             String s = Integer.toString(i);
+
+                            event.pos = s;
 
                             DatabaseReference dbr2 = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid).
                                     child("user_groups").child("student_groups").child(title).child("History").child(s);
@@ -171,6 +187,78 @@ public class DetailActivityStudent extends AppCompatActivity {
 //                }
 //            }
 //        });
+        dbr = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title);
+
+        DatabaseReference dbr1 = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid)
+                .child("user_groups").child("student_groups").child(title).child("History");
+
+        dbr1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Event event = postSnapshot.getValue(Event.class);
+                    eventListUser.add(event);
+
+                }
+
+                dbr.child("History").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                                Event event = postSnapshot.getValue(Event.class);
+                                eventListGroup.add(event);
+
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        for(int i = 0; i < eventListGroup.size(); i++) {
+
+                            int q = 0;
+                            Event temp = new Event();
+                            if(eventListUser.get(q).pos.equals(String.valueOf(i))) {
+                                temp = eventListGroup.get(i);
+                                temp.record = "present";
+                                finalList.add(temp);
+                                q++;
+                            }
+                            else {
+                                temp = eventListGroup.get(i);
+                                temp.record = "absent";
+                                finalList.add(temp);
+                            }
+                            dates = new String[finalList.size()];
+                            times = new String[finalList.size()];
+                            records = new String[finalList.size()];
+
+                            for(int j = 0; j < finalList.size(); j++){
+                                dates[j] = finalList.get(j).date;
+                                times[j] = finalList.get(j).time;
+                                records[j] = finalList.get(j).record;
+                            }
+
+                            ListViewAdaptor eventAdapter = new ListViewAdaptor(DetailActivityStudent.this, dates, times, records);
+                            listView.setAdapter(eventAdapter);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 }

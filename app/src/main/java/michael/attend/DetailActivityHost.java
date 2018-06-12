@@ -61,6 +61,8 @@ public class DetailActivityHost extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.attendees);
         no_students = (TextView) findViewById(R.id.no_students);
 
+        context = this;
+
         i = getIntent();
         title = i.getStringExtra("title");
         description = i.getStringExtra("description");
@@ -108,6 +110,7 @@ public class DetailActivityHost extends AppCompatActivity {
                             pos++;
                             dbr1.child("numEvents").setValue(Integer.toString(pos));
                         }
+
                         dbr1.child("inSession").setValue(true);
 
                     }
@@ -164,6 +167,10 @@ public class DetailActivityHost extends AppCompatActivity {
         event_description = (TextView) findViewById(R.id.group_description);
         event_host = (TextView) findViewById(R.id.host_name);
 
+        event_title.setText(title);
+        event_description.setText(description);
+        event_host.setText(host);
+
         // populating listview with students
 
         dbr = FirebaseDatabase.getInstance().getReference().child("total_groups").child(title).child("Users");
@@ -198,9 +205,6 @@ public class DetailActivityHost extends AppCompatActivity {
                                     + emails[q] + q + " size:" + names.length);
                         }
                       try {
-                          event_title.setText(title);
-                          event_description.setText(description);
-                          event_host.setText(host);
 
                           adapter = new CustomListAdapter(DetailActivityHost.this, names, emails);
                           listView.setAdapter(adapter);
@@ -211,14 +215,14 @@ public class DetailActivityHost extends AppCompatActivity {
                                   if (position > -1) {
         //                            view's student's attendance history
 
-//                                      Intent detailIntent = new Intent(context, DetailActivityHost.class);
-//                                      detailIntent.putExtra("title", title);
-//                                      detailIntent.putExtra("description", selected.description);
-//                                      detailIntent.putExtra("host", selected.hostName);
-///
-//                                      startActivity(detailIntent);
+                                      Intent detailIntent = new Intent(context, UserHistoryHostView.class);
+                                      detailIntent.putExtra("name", names[position]);
+                                      detailIntent.putExtra("title", title);
+                                      detailIntent.putExtra("username",emails[position]);
 
-                                      Toast.makeText(getApplicationContext(), names[position] + " - " + emails[position], Toast.LENGTH_LONG).show();
+                                      startActivity(detailIntent);
+
+//                                      Toast.makeText(getApplicationContext(), names[position] + " - " + emails[position], Toast.LENGTH_LONG).show();
                                   }
                               }
                           });
@@ -240,8 +244,8 @@ public class DetailActivityHost extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) { }
             });
 
-
-
-
+    }
+    public void onBackPressed(){
+        finish();
     }
 }

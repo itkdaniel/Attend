@@ -70,20 +70,14 @@ public class LoginHome extends AppCompatActivity {
         Log.d("user_names", names.toString());
     }
 
-    public void on_addGroup(View view) {
-
-        Toast.makeText(this, "Fuck you for creating a group bitch", Toast.LENGTH_LONG).show();
-
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.menu_profile){
-            Intent intent = new Intent(LoginHome.this, ProfileActivity.class);
-            startActivity(intent);
-        }
-        return true;
-    }
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        int id = item.getItemId();
+//        if(id == R.id.menu_profile){
+//            Intent intent = new Intent(LoginHome.this, ProfileActivity.class);
+//            startActivity(intent);
+//        }
+//        return true;
+//    }
 
     public void onClick_ViewGroups(View view) {
         startActivity(new Intent(LoginHome.this, ChooseGroupActivity.class));

@@ -25,7 +25,9 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:background="@color/colorAccent"
+            android:textColor="#FFFFFF"
             android:text="Host Groups"
+            android:textSize="18dp"
             android:layout_marginBottom="50dp"/>
 
         <Button
@@ -33,7 +35,10 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:background="@color/colorAccent"
-            android:text="Student Groups" />
+            android:textColor="#FFFFFF"
+            android:text="Student Groups"
+            android:textSize="18dp"/>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

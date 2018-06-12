@@ -29,9 +29,6 @@
             android:theme="@style/homePage" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".ResetPasswordActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".DetailActivityHost" />
         <activity android:name=".JoinGroupActivity" />
