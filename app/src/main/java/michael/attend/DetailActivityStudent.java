@@ -198,7 +198,6 @@ public class DetailActivityStudent extends AppCompatActivity {
                             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                 Event event = postSnapshot.getValue(Event.class);
                                 eventListGroup.add(event);
-
                             }
                         }
                         catch (Exception e) {
